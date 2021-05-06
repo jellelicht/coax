@@ -197,6 +197,13 @@
     `(s/or :number? number?) "1" 1
     `(s/or :number? number? :kw keyword? :str string?) "1" "1"
     `(s/or :number? number? :kw keyword? :str string?) 1 1
+
+
+    `(s/and string? int? pos-int?) true "true"
+    `(s/and string? int? pos-int?) 1 1
+    `(s/and string? int?) "1" 1
+    `(s/and string?) "" ""
+
     #{:a :b} "a" :a
     #{1 2} "1" 1
 

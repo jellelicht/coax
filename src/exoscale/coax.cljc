@@ -27,9 +27,15 @@
                   xs)
           (first xs)))))
 
-(defn gen-coerce-and [[_ & [spec]]]
+(defn gen-coerce-and [[_ & specs]]
   (fn [x opts]
-    (coerce spec x opts)))
+    (reduce (fn [x spec]
+              (let [x' (coerce* spec x opts)]
+                (if (identical? :exoscale.coax/invalid x')
+                  (reduced x)
+                  x')))
+            x
+            specs)))
 
 (defn gen-coerce-keys
   [[_ & {:keys [req-un opt-un]}]]
@@ -337,7 +343,7 @@
   ([spec x] (coerce spec x {}))
   ([spec x opts]
    (let [x' (coerce* spec x opts)]
-     (if (= :exoscale.coax/invalid x')
+     (if (identical? :exoscale.coax/invalid x')
        x
        x'))))
 
